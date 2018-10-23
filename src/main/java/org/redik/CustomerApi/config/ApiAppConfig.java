@@ -48,11 +48,11 @@ public class ApiAppConfig implements WebMvcConfigurer {
 	catch (PropertyVetoException exc) {
 		    throw new RuntimeException(exc);
 	}
-
+	
 	//set jdbc props
-	myDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
-	myDataSource.setUser(env.getProperty("jdbc.user"));
-	myDataSource.setPassword("jdbc.password");
+	myDataSource.setJdbcUrl("jdbc:mysql://192.168.198.130:3306/mvn-customers?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true");
+	myDataSource.setUser("mvc_crud");
+	myDataSource.setPassword("radek01");
 	logger.info("<<<<<<<< JDBC DRIVER : " + env.getProperty("jdbc.driver"));
 		logger.info("<<<<<<<< JDBC URL : " + env.getProperty("jdbc.url"));
 		logger.info("<<<<<<<< JDBC USER : " + env.getProperty("jdbc.user"));
@@ -60,8 +60,8 @@ public class ApiAppConfig implements WebMvcConfigurer {
 	//set pool props
 	myDataSource.setInitialPoolSize(propIntoInteger("connection.pool.InitialPoolSize"));
 	myDataSource.setMinPoolSize(propIntoInteger("connection.pool.MinPoolSize"));
-	myDataSource.setMaxPoolSize(propIntoInteger("connection.pool.MinPoolSize"));
-	
+	myDataSource.setMaxPoolSize(propIntoInteger("connection.pool.MaxPoolSize"));
+	myDataSource.setMaxIdleTime(propIntoInteger("connection.pool.MaxIdleTime"));
 	return myDataSource;
     }
     
@@ -78,15 +78,15 @@ public class ApiAppConfig implements WebMvcConfigurer {
     public LocalSessionFactoryBean sessionFactory() {
 	LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 	sessionFactory.setDataSource(dataSource());
-	sessionFactory.setHibernateProperties(HibernateProperties());
 	sessionFactory.setPackagesToScan("org.redik.CustomerApi.entity");
+	sessionFactory.setHibernateProperties(HibernateProperties());
 	return sessionFactory;
 	
     }
     
     // method to convert String property into Int
     public int propIntoInteger(String propName) {
-	String propValue = env.getProperty("propName");
+	String propValue = env.getProperty(propName);
 	int intProp = Integer.parseInt(propValue);
 	return intProp;
     }
@@ -97,9 +97,13 @@ public class ApiAppConfig implements WebMvcConfigurer {
 		
 		// setup transaction manager based on session factory
 		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		txManager.setSessionFactory(sessionFactory);
-
+		//txManager.setSessionFactory(sessionFactory);
+		txManager.setSessionFactory(sessionFactory().getObject());
 		return txManager;
 	}	 
     
 }
+
+
+
+

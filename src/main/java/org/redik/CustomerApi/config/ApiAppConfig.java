@@ -32,58 +32,54 @@ public class ApiAppConfig implements WebMvcConfigurer {
     private Environment env;
 
     private Logger logger = Logger.getLogger(getClass().getName());
-    
-    
+
     // Define DataSource Bean
     @Bean
     public DataSource dataSource() {
-	
-	//create connection pool
+
+	// create connection pool
 	ComboPooledDataSource myDataSource = new ComboPooledDataSource();
-	
-	//set jdbc driver
+
+	// set jdbc driver
 	try {
 	    myDataSource.setDriverClass(env.getProperty("jdbc.driver"));
-	    } 
-	catch (PropertyVetoException exc) {
-		    throw new RuntimeException(exc);
+	} catch (PropertyVetoException exc) {
+	    throw new RuntimeException(exc);
 	}
-	
-	//set jdbc props
-	myDataSource.setJdbcUrl("jdbc:mysql://192.168.198.130:3306/mvn-customers?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true");
-	myDataSource.setUser("mvc_crud");
-	myDataSource.setPassword("radek01");
+
+	// set jdbc props
+	myDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
+	myDataSource.setUser(env.getProperty("jdbc.user"));
+	myDataSource.setPassword(env.getProperty("jdbc.password"));
 	logger.info("<<<<<<<< JDBC DRIVER : " + env.getProperty("jdbc.driver"));
-		logger.info("<<<<<<<< JDBC URL : " + env.getProperty("jdbc.url"));
-		logger.info("<<<<<<<< JDBC USER : " + env.getProperty("jdbc.user"));
-		logger.info("<<<<<<<< JDBC PASSWORD : " + env.getProperty("jdbc.password"));
-	//set pool props
+	logger.info("<<<<<<<< JDBC URL : " + env.getProperty("jdbc.url"));
+	// set pool props
 	myDataSource.setInitialPoolSize(propIntoInteger("connection.pool.InitialPoolSize"));
 	myDataSource.setMinPoolSize(propIntoInteger("connection.pool.MinPoolSize"));
 	myDataSource.setMaxPoolSize(propIntoInteger("connection.pool.MaxPoolSize"));
 	myDataSource.setMaxIdleTime(propIntoInteger("connection.pool.MaxIdleTime"));
 	return myDataSource;
     }
-    
+
     // Hibernate properties
     private Properties HibernateProperties() {
 	Properties props = new Properties();
-	props.setProperty("hibernate.dialect",env.getProperty("hibernate.dialect"));
+	props.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
 	props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 	return props;
     }
-    
+
     @Bean
-    //define SessionFactory
+    // define SessionFactory
     public LocalSessionFactoryBean sessionFactory() {
 	LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 	sessionFactory.setDataSource(dataSource());
-	sessionFactory.setPackagesToScan("org.redik.CustomerApi.entity");
+	sessionFactory.setPackagesToScan(env.getProperty("hibernate.packagesToScan"));
 	sessionFactory.setHibernateProperties(HibernateProperties());
 	return sessionFactory;
-	
+
     }
-    
+
     // method to convert String property into Int
     public int propIntoInteger(String propName) {
 	String propValue = env.getProperty(propName);
@@ -92,18 +88,14 @@ public class ApiAppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-	@Autowired
-	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-		
-		// setup transaction manager based on session factory
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		//txManager.setSessionFactory(sessionFactory);
-		txManager.setSessionFactory(sessionFactory().getObject());
-		return txManager;
-	}	 
-    
+    @Autowired
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+
+	// setup transaction manager based on session factory
+	HibernateTransactionManager txManager = new HibernateTransactionManager();
+	// txManager.setSessionFactory(sessionFactory);
+	txManager.setSessionFactory(sessionFactory().getObject());
+	return txManager;
+    }
+
 }
-
-
-
-

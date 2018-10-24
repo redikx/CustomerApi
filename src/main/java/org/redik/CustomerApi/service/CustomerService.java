@@ -3,6 +3,8 @@ package org.redik.CustomerApi.service;
 import java.util.List;
 
 import org.redik.CustomerApi.entity.Customer;
+import org.springframework.context.annotation.Bean;
+
 
 public interface CustomerService {
 

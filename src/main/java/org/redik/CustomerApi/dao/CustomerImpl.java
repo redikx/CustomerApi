@@ -21,7 +21,7 @@ public class CustomerImpl implements CustomerDAO {
     @Override
     public List<Customer> getCustomers() {
 	Session session = sessionFactory.getCurrentSession();
-	TypedQuery<Customer> thisQuery = session.createQuery("from customer order by id",Customer.class);
+	TypedQuery<Customer> thisQuery = session.createQuery("from Customer order by id",Customer.class);
 	List<Customer> customers = thisQuery.getResultList();
 	return customers;
     }

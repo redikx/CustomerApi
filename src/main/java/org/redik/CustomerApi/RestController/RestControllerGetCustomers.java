@@ -24,6 +24,12 @@ public class RestControllerGetCustomers {
     
     @GetMapping("/customers/{customerId}")
     public Customer RestGetCustomer(@PathVariable int customerId) {
-	return customerService.getCustomer(customerId);
+	Customer theCustomer = customerService.getCustomer(customerId);
+	
+	if ( theCustomer == null) {
+	    throw new CustomerNotFoundException("Customer hasn't found");
+	}
+	
+	return theCustomer;
     }
 }

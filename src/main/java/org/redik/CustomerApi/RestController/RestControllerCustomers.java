@@ -5,11 +5,14 @@ import java.util.List;
 import org.redik.CustomerApi.entity.Customer;
 import org.redik.CustomerApi.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,6 +43,18 @@ public Customer RestAddCustomer(@RequestBody Customer customer) {
     customer.setId(0);
     customerService.SaveCustomer(customer);
     return customer;
+}
+
+@PutMapping("/customers")
+public Customer RestUpdateCustomer(@RequestBody Customer customer) {
+ customerService.SaveCustomer(customer);
+ return customer;
+}
+
+@DeleteMapping("/customers/{custId}")
+public String RestDeleteCustomer(@PathVariable int custId) {
+    customerService.deleteCustomer(custId);
+return null;
 }
     }
 

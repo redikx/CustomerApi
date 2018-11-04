@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.BaseMatcher.*;
 
@@ -28,7 +29,7 @@ public class test2 {
     @Test
     public void test() {
 	Customer cust = customerService.getCustomer(1);
-	junit.framework.Assert.assertEquals("Mueller", cust.getLast_name());
+	assertEquals("Mueller",cust.getLast_name());
     }
 
 }

@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.redik.CustomerApi.entity.Customer;
+import org.redik.CustomerApi.entity.Customer_card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,14 +33,14 @@ public class CustomerImpl implements CustomerDAO {
 	Customer customer = session.get(Customer.class, theId);
 	return customer;
     }
-
+    
     @Transactional
     @Override
     public void SaveCustomer(Customer theCustomer) {
 	Session session = sessionFactory.getCurrentSession();
 	session.saveOrUpdate(theCustomer);
     }
-
+    
     @Transactional
     @Override
     public void DeleteCustomer(int thrId) {
@@ -48,5 +49,7 @@ public class CustomerImpl implements CustomerDAO {
 	theQuery.setParameter("idToDelete", thrId);
 	theQuery.executeUpdate();
     }
+
+
 
 }

@@ -1,11 +1,10 @@
 package org.redik.CustomerApi;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redik.CustomerApi.config.ApiAppConfig;
 import org.redik.CustomerApi.entity.Customer;
+import org.redik.CustomerApi.entity.Customer_card;
 import org.redik.CustomerApi.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,17 +27,20 @@ public class Junit_test1 {
     @Autowired
     CustomerService customerService;
     
-    @Test
+  /*  @Test
     public void chk_row_returned() {
 	Customer cust = customerService.getCustomer(1);
 	System.out.println(cust.toString());
-    }
-    
-    /*@Test
-    @Rollback(true)
-    public void chk_row_insert() {
-	Customer cust = new Customer("John","Malkovic","john@gmail.com");
-	customerService.SaveCustomer(cust);
     }*/
+    
+    @Test
+    @Rollback(false)
+    public void chk_row_insert() {
+	Customer cust = new Customer("Zenon","Zajebiaszczak","zajeb@gmail.com");
+	Customer_card card = new Customer_card("A00002",cust);
+	cust.setCustomer_card(card);
+	customerService.SaveCustomerWithCard(cust,card);
+    }
 
 }
+	

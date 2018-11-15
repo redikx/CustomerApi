@@ -16,12 +16,11 @@ public class Customer {
     
 public Customer() {}    
     
-public Customer(String first_name, String last_name, String email, int card_id) {
+public Customer(String first_name, String last_name, String email ) {
 	super();
 	this.first_name = first_name;
 	this.last_name = last_name;
 	this.email = email;
-	this.card_id = card_id;
     }
 
 
@@ -53,8 +52,8 @@ private String last_name;
 @Column(name="email")
 private String email;
 
-@Column(name="card_id")
-private int card_id;
+/*@Column(name="card_id")
+private int card_id;*/
 
 public int getId() {
     return id;
@@ -88,13 +87,6 @@ public void setEmail(String email) {
     this.email = email;
 }
 
-public int getCard_id() {
-    return card_id;
-}
-
-public void setCard_id(int card_id) {
-    this.card_id = card_id;
-}
 
 @Override
 public String toString() {

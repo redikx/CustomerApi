@@ -12,11 +12,25 @@ import javax.persistence.Table;
 @Table(name="customer_card")
 public class Customer_card {
 
+    public Customer_card(String card_number, Customer customer) {
+	super();
+	this.card_number = card_number;
+	this.customer = customer;
+    }
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
     
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     @Column(name="card_number")
     private String card_number;
 

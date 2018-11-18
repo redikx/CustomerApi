@@ -41,6 +41,11 @@ public class Junit_test1 {
 	cust.setCustomer_card(card);
 	customerService.SaveCustomerWithCard(cust,card);
     }
+    
+    @Test
+    public void testCrudRepository() {
+	
+    }
 
 }
 	
